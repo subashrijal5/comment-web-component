@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modular Comment System</title>
+    <link rel="stylesheet" href="./src/index.css" />
+    <script type="module" src="/src/comment-component.ts"></script>
+  </head>
+  <body>
+    <comment-component url="/sample-blog">
+      <p>This is a sample article content. The comment system below allows users to react to this content, add comments, and reply to comments (with a one-level reply depth).</p>
+      
+      <p>Each comment and reply can receive reactions using the reaction panel component. Try adding a comment or replying to an existing one!</p>
+    </comment-component>
+
+    <script>
+      let ac = 12
+      let bc = ac *23
+      debugger
+    </script>
+  </body>
+</html>
