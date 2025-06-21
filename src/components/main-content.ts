@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import './reaction-panel';
+import type { Reaction, ReactionType } from '../api/types';
 
 /**
  * Component for displaying the main content with reactions
@@ -18,6 +19,10 @@ export class MainContent extends LitElement {
 
   @property({ type: String })
   timestamp = '';
+
+  @property({ type: Object })
+  reactionCounts: Partial<Record<ReactionType, number>> = {};
+
 
   render() {
     return html`
@@ -37,6 +42,7 @@ export class MainContent extends LitElement {
         <div class="reactions">
           <reaction-panel
             @reaction-changed=${this._handleReactionChange}
+            .reactionCounts=${this.reactionCounts}
           ></reaction-panel>
         </div>
       </div>

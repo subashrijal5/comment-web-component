@@ -55,7 +55,9 @@ export class CommentComponent extends LitElement {
       siteId: this._siteId,
     });
     this._blog = blogResponse.blog;
+
   }
+
 
   render() {
     return html`
@@ -65,6 +67,7 @@ export class CommentComponent extends LitElement {
           .author=${this.author}
           .timestamp=${this.timestamp}
           .content=${this.content}
+          .reactionCounts=${this._blog?.reaction_counts || {}}
           @content-reaction-changed=${this._handleContentReactionChange}
         >
           <slot></slot>

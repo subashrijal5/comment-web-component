@@ -7,7 +7,7 @@ import type {
 } from "./types";
 
 const baseUrl = "http://localhost:8000/api";
-const clientId = "f040ce5d-dfaa-4825-8d62-ad1adfc52fe6";
+const clientId = "e2336351-e81e-4c13-8c0b-9823b3d67066";
 
 export const authenticate = async () => {
   // Check if local storage has token

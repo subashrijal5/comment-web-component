@@ -1,3 +1,5 @@
+export type ReactionType = "like" | "love" | "laugh" | "surprised" | "sad";
+
 export interface VerifySiteResponse {
   site: {
     id: string;
@@ -38,18 +40,18 @@ export interface Pagination {
   has_more: boolean;
 }
 
+export type Reaction = {
+  emoji: string;
+  count: number;
+  selected: boolean;
+  type: ReactionType;
+};
+
+
 export interface Blog {
   id: string;
   name: string;
   url: string;
-  reaction_counts: {
-    like?: number;
-    dislike?: number;
-    love?: number;
-    haha?: number;
-    wow?: number;
-    sad?: number;
-    angry?: number;
-  };
+  reaction_counts: Record<ReactionType, number>;
   total_comments: number;
 }

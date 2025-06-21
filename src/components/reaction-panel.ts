@@ -1,19 +1,16 @@
-import { LitElement, html, css } from "lit";
-import { customElement, property } from "lit/decorators.js";
-
-type Reaction = {
-  emoji: string;
-  count: number;
-  selected: boolean;
-  type: "like" | "love" | "laugh" | "surprised" | "sad";
-};
+import { LitElement, html, css, type PropertyValues } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import type { Reaction, ReactionType } from "../api/types";
 
 /**
  * Reusable component for displaying and selecting reactions
  */
 @customElement("reaction-panel")
 export class ReactionPanel extends LitElement {
-  @property({ type: Array })
+  @property({ type: Object })
+  reactionCounts: Partial<Record<ReactionType, number>> = {};
+
+  @state()
   reactions: Reaction[] = [
     { emoji: "👍", count: 0, selected: false, type: "like" },
     { emoji: "❤️", count: 0, selected: false, type: "love" },
@@ -22,6 +19,14 @@ export class ReactionPanel extends LitElement {
     { emoji: "😢", count: 0, selected: false, type: "sad" },
   ];
 
+  protected updated(_changedProperties: PropertyValues): void {
+    if (_changedProperties.has("reactionCounts")) {
+      this.reactions = this.reactions.map((reaction) => {
+        reaction.count = this.reactionCounts[reaction.type] || 0;
+        return reaction;
+      });
+    }
+  }
   render() {
     return html`
       <div class="reaction-container">
