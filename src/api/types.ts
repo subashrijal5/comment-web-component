@@ -20,7 +20,7 @@ export interface ReplyData {
   name: string;
   body: string;
   timestamp: string;
-  reactions?: any[];
+  reaction_counts: Partial<Record<ReactionType, number>>;
 }
 
 export interface CommentData {
@@ -28,7 +28,7 @@ export interface CommentData {
   body: string;
   timestamp: string;
   replies: ReplyData[];
-  reactions?: any[];
+  reaction_counts: Partial<Record<ReactionType, number>>;
   name: string;
 }
 

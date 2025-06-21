@@ -3,7 +3,6 @@ import type {
   Blog,
   CommentData,
   Pagination,
-  ReplyData,
 } from "./types";
 
 const baseUrl = "http://localhost:8000/api";

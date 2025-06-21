@@ -15,7 +15,7 @@ export class ReplyItem extends LitElement {
     name: '',
     body: '',
     timestamp: '',
-    reactions: []
+    reaction_counts: {}
   };
 
   render() {
@@ -28,6 +28,7 @@ export class ReplyItem extends LitElement {
         <div class="reply-content">${this.reply.body}</div>
         <div class="reply-actions">
           <reaction-panel
+            .reactionCounts=${this.reply.reaction_counts}
             @reaction-changed=${this._handleReactionChange}
           ></reaction-panel>
         </div>

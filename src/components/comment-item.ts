@@ -18,7 +18,7 @@ export class CommentItem extends LitElement {
     name: '',
     timestamp: '',
     replies: [],
-    reactions: []
+    reaction_counts: {}
   };
 
   @state()
@@ -38,6 +38,7 @@ export class CommentItem extends LitElement {
         <div class="comment-actions">
           <reaction-panel
             @reaction-changed=${this._handleReactionChange}
+            .reactionCounts=${this.comment.reaction_counts || {}}
           ></reaction-panel>
           <button 
             class="reply-button" 
@@ -78,7 +79,6 @@ export class CommentItem extends LitElement {
             ${this.comment.replies.map(reply => html`
               <reply-item 
                 .reply=${reply}
-                @reply-reaction-changed=${this._handleReplyReactionChange}
               ></reply-item>
             `)}
           </div>
@@ -99,17 +99,6 @@ export class CommentItem extends LitElement {
     }));
   }
   
-  private _handleReplyReactionChange(e: CustomEvent) {
-    // Forward the reply reaction event
-    this.dispatchEvent(new CustomEvent('reply-reaction-changed', {
-      detail: {
-        commentId: this.comment.id,
-        ...e.detail
-      },
-      bubbles: true,
-      composed: true
-    }));
-  }
   
   private _toggleReplyInput() {
     this._showReplyInput = !this._showReplyInput;
@@ -132,7 +121,7 @@ export class CommentItem extends LitElement {
       name: 'Current User', // In a real app, this would come from auth
       body: this._replyText,
       timestamp: new Date().toLocaleString(),
-      reactions: []
+      reaction_counts: {}
     };
     
     // Dispatch event for parent to handle

@@ -104,9 +104,14 @@ export class CommentComponent extends LitElement {
     });
   }
 
-  private _handleCommentReactionChange(e: CustomEvent) {
-    console.log("Comment reaction changed:", e.detail);
-    // In a real app, you would update state or send to a backend
+  private async _handleCommentReactionChange(e: CustomEvent) {
+    if (!this._blog?.id) return;
+    await toggleReaction({
+      blogId: this._blog.id,
+      token: this._token,
+      commentId: e.detail.commentId,
+      reaction: e.detail.reaction,
+    });
   }
 
   private async _handleReplyAdded(e: CustomEvent) {
@@ -120,7 +125,13 @@ export class CommentComponent extends LitElement {
   }
 
   private async _handleReplyReactionChange(e: CustomEvent) {
-    console.log("Reply reaction changed:", e.detail);
+    if (!this._blog?.id) return;
+    await toggleReaction({
+      blogId: this._blog.id,
+      token: this._token,
+      commentId: e.detail.replyId,
+      reaction: e.detail.reaction,
+    });
   }
 
   static styles = css`

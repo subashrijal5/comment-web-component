@@ -1,7 +1,7 @@
 import { LitElement, html, css, type PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import "./comment-item";
-import type { CommentData, Blog, Pagination } from "../api/types";
+import type { CommentData, Blog, Pagination, Reaction } from "../api/types";
 import { getComments } from "../api/verify-blog";
 
 /**
@@ -98,9 +98,6 @@ export class CommentThread extends LitElement {
                 (comment) => html`
                   <comment-item
                     .comment=${comment}
-                    @comment-reaction-changed=${this
-                      ._handleCommentReactionChange}
-                    @reply-reaction-changed=${this._handleReplyReactionChange}
                     @reply-added=${this._handleReplyAdded}
                   ></comment-item>
                 `
@@ -152,7 +149,7 @@ export class CommentThread extends LitElement {
       timestamp: new Date().toLocaleString(),
       name: this._commentName,
       replies: [],
-      reactions: [],
+      reaction_counts: {},
     };
 
     // Update the comments array
@@ -172,76 +169,6 @@ export class CommentThread extends LitElement {
     // Reset the input
     this._commentText = "";
     this._commentName = "";
-  }
-
-  private _handleCommentReactionChange(e: CustomEvent) {
-    const { commentId, index, reaction } = e.detail;
-
-    // Find the comment and update its reactions
-    const updatedComments = this.comments.map((comment) => {
-      if (comment.id === commentId) {
-        // Update the reaction
-        const updatedReactions = [...(comment.reactions || [])];
-        updatedReactions[index] = reaction;
-
-        return {
-          ...comment,
-          reactions: updatedReactions,
-        };
-      }
-      return comment;
-    });
-
-    this.comments = updatedComments;
-
-    // Dispatch event for parent to handle
-    this.dispatchEvent(
-      new CustomEvent("comment-reaction-changed", {
-        detail: e.detail,
-        bubbles: true,
-        composed: true,
-      })
-    );
-  }
-
-  private _handleReplyReactionChange(e: CustomEvent) {
-    const { commentId, replyId, index, reaction } = e.detail;
-
-    // Find the comment and reply, then update its reactions
-    const updatedComments = this.comments.map((comment) => {
-      if (comment.id === commentId) {
-        const updatedReplies = comment.replies.map((reply) => {
-          if (reply.id === replyId) {
-            // Update the reaction
-            const updatedReactions = [...(reply.reactions || [])];
-            updatedReactions[index] = reaction;
-
-            return {
-              ...reply,
-              reactions: updatedReactions,
-            };
-          }
-          return reply;
-        });
-
-        return {
-          ...comment,
-          replies: updatedReplies,
-        };
-      }
-      return comment;
-    });
-
-    this.comments = updatedComments;
-
-    // Dispatch event for parent to handle
-    this.dispatchEvent(
-      new CustomEvent("reply-reaction-changed", {
-        detail: e.detail,
-        bubbles: true,
-        composed: true,
-      })
-    );
   }
 
   private _handleReplyAdded(e: CustomEvent) {
